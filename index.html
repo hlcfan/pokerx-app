@@ -26,9 +26,12 @@
         align-items: center;
         color: rgba(0, 0, 0, 0.7);
       }
+
       .loader-hide {
         display: none;
       }
+
+      ::selection { background: white; /* WebKit/Blink Browsers */ }
     </style>
   </head>
 
@@ -37,8 +40,7 @@
       <h1>LOADING...</h1>
     </div>
 
-    <webview class="hide1" src="https://pokrex.com" preload="./preload.js"></webview>
-
+    <webview class="hide1" src="http://a3.active.local:3000/rooms/update-check" preload="./preload.js"></webview>
     <script>
       require('./renderer');
     </script>

@@ -1,60 +1,89 @@
-const electron = require('electron')
-// Module to control application life.
-const app = electron.app
-// Module to create native browser window.
-const BrowserWindow = electron.BrowserWindow
+const { app, BrowserWindow, Menu, webContents, ipcMain, net } = require('electron');
+const axios = require('axios');
 
-const path = require('path')
-const url = require('url')
+const path = require('path');
+let mainWindow;
+let webviewId;
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+app.on('ready', () => {
+  mainWindow = new BrowserWindow({width: 1200, height: 800});
+  mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
+  mainWindow.openDevTools({ mode: 'bottom' });
 
-function createWindow () {
-  // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
-
-  // and load the index.html of the app.
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'index.html'),
-    protocol: 'file:',
-    slashes: true
-  }))
-
-  // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
-
-  // Emitted when the window is closed.
-  mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWindow = null
+  ipcMain.on("updateIssue", (event, props) => {
+    console.log("===Update")
+    axios.request({
+      url: "/issue/POK-10",
+      baseURL: "http://localhost:8080/rest/api/2",
+      method: "put",
+      headers: { 'content-type': 'application/json' },
+      responseType: 'json',
+      auth: {
+        username: "hlcfan",
+        password: "123456"
+      },
+      data: {
+        fields: {
+          customfield_10006: 13
+        }
+      }
+    }).then(function(response) {
+      console.log(response)
+    })
   })
+  createMenu();
+});
+
+// get the webview's webContents
+function getWebviewWebContents() {
+  return webContents.getAllWebContents()
+    // TODO replace `localhost` with whatever the remote web app's URL is
+    .filter(wc => wc.getURL().search(/a3.active.local/gi) > -1)
+    .pop();
 }
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+function createMenu() {
 
-// Quit when all windows are closed.
-app.on('window-all-closed', function () {
-  // On OS X it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-})
+  const topLevelItems = [
+    {
+      label: 'Application',
+      submenu: [
+        {
+          label: 'Quit',
+          accelerator: 'CmdOrCtrl+Q',
+          click() {
+            app.quit();
+          }
+        }
+      ]
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { label: 'Undo', accelerator: 'CmdOrCtrl+Z', role: 'undo' },
+        { label: 'Redo', accelerator: 'Shift+CmdOrCtrl+Z', role: 'redo' },
+        { type: 'separator' },
+        { label: 'Cut', accelerator: 'CmdOrCtrl+X', role: 'cut' },
+        { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
+        { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
+        { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' }
+      ]
+    },
+    {
+      label: 'Actions',
+      submenu: [
+        {
+          label: 'Mark All As Complete',
+          click() {
+            // send an IPC message to the webview for handling
+            const wc = getWebviewWebContents();
+            wc.send("alert(1)")
+            wc.send('updateIssue', "ACOM-7823");
+          }
+        }
+      ]
+    }
+  ];
 
-app.on('activate', function () {
-  // On OS X it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-  if (mainWindow === null) {
-    createWindow()
-  }
-})
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
+  Menu.setApplicationMenu(Menu.buildFromTemplate(topLevelItems));
+}

@@ -1,3 +1,5 @@
+require('devtron').install();
+
 const $webview = document.querySelector('webview');
 const $loader = document.querySelector('.loader');
 let isInitialLoad = true;
