@@ -26,6 +26,7 @@ app.on('ready', () => {
       }
     }).then(function(response) {
       console.log(response)
+      mainWindow.webContents.send("updateSuccess", link)
     })
   })
 });

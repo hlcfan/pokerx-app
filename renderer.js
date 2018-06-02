@@ -1,3 +1,5 @@
+const { ipcRenderer, remote } = require('electron');
+
 require('devtron').install();
 
 const $webview = document.querySelector('webview');
@@ -20,6 +22,11 @@ $webview.addEventListener('dom-ready', () => {
     $loader.classList.add('loader-hide');
   }, 100);
 });
+
+ipcRenderer.on("updateSuccess", (event, props) => {
+  console.log("Update success")
+  console.dir(props)
+})
 
 // this is just for development convenience
 // (because the todo app's dev tools are in a separate process)
