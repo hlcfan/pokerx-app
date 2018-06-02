@@ -1,7 +1,7 @@
 const { app, BrowserWindow, Menu, webContents, ipcMain, net } = require('electron');
 const axios = require('axios');
-
 const path = require('path');
+
 let mainWindow;
 let webviewId;
 
@@ -9,29 +9,25 @@ app.on('ready', () => {
   mainWindow = new BrowserWindow({width: 1200, height: 800});
   mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
   mainWindow.openDevTools({ mode: 'bottom' });
+  createMenu();
 
-  ipcMain.on("updateIssue", (event, props) => {
-    console.log("===Update")
+  ipcMain.on("updateIssue", (event, {link, point, auth}) => {
+    console.log("===Update Issue")
     axios.request({
-      url: "/issue/POK-10",
-      baseURL: "http://localhost:8080/rest/api/2",
+      url: link,
       method: "put",
       headers: { 'content-type': 'application/json' },
       responseType: 'json',
-      auth: {
-        username: "hlcfan",
-        password: "123456"
-      },
+      auth: auth,
       data: {
         fields: {
-          customfield_10006: 13
+          customfield_10006: point
         }
       }
     }).then(function(response) {
       console.log(response)
     })
   })
-  createMenu();
 });
 
 // get the webview's webContents

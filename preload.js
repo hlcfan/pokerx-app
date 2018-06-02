@@ -35,11 +35,9 @@ function setDockBadge(count) {
   }
 }
 
-function updateIssue(issueId, value) {
-  alert(`Update ${issueId}'s value to ${value}`)
+function updateIssue(options) {
+  // alert(`Update ${issueId}'s value to ${value}`)
   if (process.platform === 'darwin') {
-    ipcRenderer.send("updateIssue", {
-      issueId: value
-    })
+    ipcRenderer.send("updateIssue", options)
   }
 }
