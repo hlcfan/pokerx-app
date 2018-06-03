@@ -11,7 +11,7 @@ app.on('ready', () => {
   mainWindow.openDevTools({ mode: 'bottom' });
   createMenu();
 
-  ipcMain.on("updateIssue", (event, {link, point, auth}) => {
+  ipcMain.on("updateIssue", (event, {roomId, link, point, auth}) => {
     console.log("===Update Issue")
     axios.request({
       url: link,
@@ -26,7 +26,7 @@ app.on('ready', () => {
       }
     }).then(function(response) {
       console.log(response)
-      mainWindow.webContents.send("updateSuccess", link)
+      mainWindow.webContents.send("updateSuccess", {roomId, link, point})
     })
   })
 });

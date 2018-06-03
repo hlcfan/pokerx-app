@@ -1,5 +1,5 @@
 const { ipcRenderer, remote } = require('electron');
-
+const axios = require('axios');
 require('devtron').install();
 
 const $webview = document.querySelector('webview');
@@ -23,9 +23,18 @@ $webview.addEventListener('dom-ready', () => {
   }, 100);
 });
 
-ipcRenderer.on("updateSuccess", (event, props) => {
-  console.log("Update success")
-  console.dir(props)
+ipcRenderer.on("updateSuccess", (event, {roomId, link, point}) => {
+  axios.request({
+    url: `http://a3.active.local:3000/rooms/${roomId}/sync_status`,
+    method: "post",
+    headers: { 'content-type': 'application/json' },
+    data: {
+      link: link,
+      point: point
+    }
+  }).then(function(response) {
+    console.log("Sync status success!")
+  })
 })
 
 // this is just for development convenience
