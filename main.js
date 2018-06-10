@@ -11,8 +11,10 @@ app.on('ready', () => {
   mainWindow.openDevTools({ mode: 'bottom' });
   createMenu();
 
-  ipcMain.on("updateIssue", (event, {roomId, link, point, auth}) => {
+  ipcMain.on("updateIssue", (event, {roomId, link, point, field, auth}) => {
     console.log("===Update Issue")
+    fieldsToUpdate = {}
+    fieldsToUpdate[field] = point
     axios.request({
       url: link,
       method: "put",
@@ -20,9 +22,7 @@ app.on('ready', () => {
       responseType: 'json',
       auth: auth,
       data: {
-        fields: {
-          customfield_10006: point
-        }
+        fields: fieldsToUpdate
       }
     }).then(function(response) {
       console.log(response)
