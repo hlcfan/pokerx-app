@@ -11,23 +11,39 @@ app.on('ready', () => {
   mainWindow.openDevTools({ mode: 'bottom' });
   createMenu();
 
-  ipcMain.on("updateIssue", (event, {roomId, link, point, field, auth}) => {
-    console.log("===Update Issue")
-    fieldsToUpdate = {}
-    fieldsToUpdate[field] = point
+  ipcMain.on("updateIssue", (event, {roomId, link, point, field, auth, fieldListUrl}) => {
     axios.request({
-      url: link,
-      method: "put",
+      url: fieldListUrl,
+      method: "get",
       headers: { 'content-type': 'application/json' },
       responseType: 'json',
-      auth: auth,
-      data: {
-        fields: fieldsToUpdate
-      }
+      auth: auth
     }).then(function(response) {
-      console.log(response)
-      mainWindow.webContents.send("updateSuccess", {roomId, link, point})
-    })
+      pointField = response.data
+        .find(jiraField => jiraField.name.toLowerCase() === field)
+        .id
+      console.log("===Update Issue")
+      fieldsToUpdate = {}
+      fieldsToUpdate[pointField] = point
+      axios.request({
+        url: link,
+        method: "put",
+        headers: { 'content-type': 'application/json' },
+        responseType: 'json',
+        auth: auth,
+        data: {
+          fields: fieldsToUpdate
+        }
+      }).then(function(response) {
+        console.log(response)
+        mainWindow.webContents.send("updateSuccess", {roomId, link, point})
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }).catch(function (error) {
+      console.log("===Fetch custom fields failure.")
+      console.log(error);
+    });
   })
 });
 
