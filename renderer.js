@@ -6,6 +6,15 @@ const $webview = document.querySelector('webview');
 const $loader = document.querySelector('.loader');
 let isInitialLoad = true;
 
+const { shell } = require('electron');
+//open links externally by default
+$webview.addEventListener('new-window', (e) => {
+  const protocol = require('url').parse(e.url).protocol
+  if (protocol === 'http:' || protocol === 'https:') {
+    shell.openExternal(e.url);
+  }
+})
+
 $webview.addEventListener('did-start-loading', () => {
   // we use client side rendering so the loader is only needed on the first page load
   if(isInitialLoad) {
