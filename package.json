@@ -1,26 +1,53 @@
 {
-  "name": "electron-quick-start",
+  "name": "Pokrex",
   "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "description": "Pokrex for Desktop",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "pack": "build --dir",
+    "dist": "build"
   },
-  "repository": "https://github.com/electron/electron-quick-start",
+  "build": {
+    "appId": "com.pokrex.com.Pokrex",
+    "dmg": {
+      "contents": [
+        {
+          "x": 110,
+          "y": 150
+        },
+        {
+          "x": 240,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "win": {
+      "target": "NSIS",
+      "icon": "build/icon.ico"
+    }
+  },
+  "repository": "https://github.com/hlcfan/pokerx-app",
   "keywords": [
-    "Electron",
-    "quick",
-    "start",
-    "tutorial",
-    "demo"
+    "Pokrex",
+    "Online planning poker"
   ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
+  "author": "hlcfan",
+  "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0"
   },
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^1.8.6"
+    "electron": "^1.8.6",
+    "electron-builder": "^20.15.1"
   }
 }
