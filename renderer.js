@@ -1,6 +1,6 @@
 const { ipcRenderer, remote } = require('electron');
 const axios = require('axios');
-require('devtron').install();
+// require('devtron').install();
 
 const $webview = document.querySelector('webview');
 const $loader = document.querySelector('.loader');
