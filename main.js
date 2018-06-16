@@ -19,8 +19,8 @@ app.on('ready', () => {
       responseType: 'json',
       auth: auth
     }).then(function(response) {
-      pointField = response.data
-        .find(jiraField => jiraField.name.toLowerCase() === field)
+      let pointField = response.data
+        .find(jiraField => jiraField.name.toLowerCase() === field.toLowerCase())
         .id
       console.log("===Update Issue")
       fieldsToUpdate = {}
