@@ -60,7 +60,7 @@ function createMenu() {
 
   const topLevelItems = [
     {
-      label: 'Application',
+      label: 'Pokrex',
       submenu: [
         {
           label: 'Quit',
@@ -81,20 +81,6 @@ function createMenu() {
         { label: 'Copy', accelerator: 'CmdOrCtrl+C', role: 'copy' },
         { label: 'Paste', accelerator: 'CmdOrCtrl+V', role: 'paste' },
         { label: 'Select All', accelerator: 'CmdOrCtrl+A', role: 'selectall' }
-      ]
-    },
-    {
-      label: 'Actions',
-      submenu: [
-        {
-          label: 'Mark All As Complete',
-          click() {
-            // send an IPC message to the webview for handling
-            const wc = getWebviewWebContents();
-            wc.send("alert(1)")
-            wc.send('updateIssue', "ACOM-7823");
-          }
-        }
       ]
     }
   ];
