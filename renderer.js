@@ -42,12 +42,12 @@ ipcRenderer.on("updateSuccess", (event, {roomId, link, point}) => {
       point: point
     }
   }).then(function(response) {
-    console.log("Sync status success!")
+    // console.log("Sync status success!")
   })
 })
 
 // this is just for development convenience
 // (because the todo app's dev tools are in a separate process)
-window.openWebviewDevTools = () => {
-  $webview.getWebContents().openDevTools();
-};
+// window.openWebviewDevTools = () => {
+//   $webview.getWebContents().openDevTools();
+// };

@@ -8,8 +8,9 @@ let webviewId;
 app.on('ready', () => {
   mainWindow = new BrowserWindow({width: 1200, height: 800});
   mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
-  mainWindow.openDevTools({ mode: 'bottom' });
   createMenu();
+
+  // mainWindow.openDevTools({ mode: 'bottom' });
 
   ipcMain.on("updateIssue", (event, {roomId, link, point, field, auth, fieldListUrl}) => {
     axios.request({
