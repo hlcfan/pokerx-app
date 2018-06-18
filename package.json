@@ -43,11 +43,12 @@
   "author": "hlcfan",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "npm": "^6.1.0"
   },
   "devDependencies": {
     "devtron": "^1.4.0",
-    "electron": "^1.8.6",
-    "electron-builder": "^20.15.1"
+    "electron": "^2.0.2",
+    "electron-builder": "^20.15.3"
   }
 }
