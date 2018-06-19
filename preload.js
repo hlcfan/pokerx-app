@@ -36,8 +36,5 @@ function setDockBadge(count) {
 }
 
 function updateIssue(options) {
-  // alert(`Update ${issueId}'s value to ${value}`)
-  if (process.platform === 'darwin') {
-    ipcRenderer.send("updateIssue", options)
-  }
+  ipcRenderer.send("updateIssue", options)
 }

@@ -6,7 +6,11 @@ let mainWindow;
 let webviewId;
 
 app.on('ready', () => {
-  mainWindow = new BrowserWindow({width: 1200, height: 800});
+  mainWindow = new BrowserWindow({
+    width: 1200,
+    height: 800,
+    icon: path.join(__dirname, "icon.png")
+  });
   mainWindow.loadURL(path.join('file://', __dirname, 'index.html'));
   createMenu();
 
@@ -46,6 +50,10 @@ app.on('ready', () => {
       console.log(error);
     });
   })
+});
+
+app.on('window-all-closed', () => {
+  app.quit();
 });
 
 // get the webview's webContents

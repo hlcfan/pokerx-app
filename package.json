@@ -10,6 +10,9 @@
   },
   "build": {
     "appId": "com.pokrex.com.Pokrex",
+    "directories": {
+      "buildResources": "icon.png"
+    },
     "dmg": {
       "contents": [
         {
