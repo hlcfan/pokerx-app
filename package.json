@@ -34,7 +34,7 @@
       ]
     },
     "win": {
-      "target": "NSIS",
+      "target": "nsis",
       "icon": "build/icon.ico"
     }
   },
@@ -43,7 +43,8 @@
     "Pokrex",
     "Online planning poker"
   ],
-  "author": "hlcfan",
+  "author": "hlcfan <hlcfan.yan@gmail.com>",
+  "email": "hlcfan.yan@gmail.com",
   "license": "MIT",
   "dependencies": {
     "axios": "^0.18.0",
