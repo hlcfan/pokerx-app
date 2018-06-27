@@ -34,7 +34,7 @@ $webview.addEventListener('dom-ready', () => {
 
 ipcRenderer.on("updateSuccess", (event, {roomId, link, point}) => {
   axios.request({
-    url: `http://a3.active.local:3000/rooms/${roomId}/sync_status`,
+    url: `https://pokrex.com/rooms/${roomId}/sync_status`,
     method: "post",
     headers: { 'content-type': 'application/json' },
     data: {
